@@ -1,16 +1,25 @@
 import pandas as pd
 import pymorphy3
+from tkinter import *
+from tkinter import filedialog as fd
 
 morph = pymorphy3.MorphAnalyzer()
-
-FILE_ = 'sample.xlsx'
-
-excel_data = pd.read_excel(FILE_, usecols=[1])
 
 marks = '''!()-[]{};?@#$%:'"\,./^&amp;*_'''
 
 
-def read_write_file():
+def select_file():
+    file_name = str(fd.askopenfilename())
+    dir = file_name[0:file_name.rfind('/') + 1]
+    FILE_ = file_name
+    file_name_resul = dir + 'result.xlsx'
+    l1['text'] = "Берем данные из файла:"
+    l2['text'] = file_name
+    b1['state'] = 'disabled'
+    l3['text'] = "Программа выполняется..."
+    root.update()
+    excel_data = pd.read_excel(FILE_, usecols=[1])
+
     col_B = []
     col_C = []
     col_D = []
@@ -75,8 +84,31 @@ def read_write_file():
         'глагол': col_F,
     })
 
-    df.to_excel('sample2.xlsx', sheet_name='дата', index=False)
+    df.to_excel(file_name_resul, sheet_name='дата', index=False)
+
+    l3['text'] = "Готово! Результат здесь:"
+    l4['text'] = file_name_resul
+    b1['state'] = 'normal'
 
 
 if __name__ == '__main__':
-    read_write_file()
+    root = Tk()
+    root.title('Парсер граммем')
+    root.geometry('500x150')
+    root.resizable(width=False, height=False)
+
+    b1 = Button(text="Открыть", command=select_file)
+    l1 = Label(root, width=450)
+    l2 = Label(root, text="", width=450)
+    l3 = Label(root, text="", width=450)
+    l4 = Label(root, text="", width=450)
+
+    l0 = Label(root, text="Выберите файл")
+    l0.pack()
+    b1.pack()
+    l1.pack()
+    l2.pack()
+    l3.pack()
+    l4.pack()
+
+    root.mainloop()
