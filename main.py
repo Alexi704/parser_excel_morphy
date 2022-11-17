@@ -1,8 +1,8 @@
 import pandas as pd
-import pymorphy3
 from tkinter import *
 from tkinter import filedialog as fd
 
+import pymorphy3
 morph = pymorphy3.MorphAnalyzer()
 
 marks = '''!()-[]{};?@#$%:'"\,./^&amp;*_'''
